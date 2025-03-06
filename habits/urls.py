@@ -8,4 +8,9 @@ router.register(r"habits", HabitViewSet)
 
 urlpatterns = [
     path("", include(router.urls)),
+    path(
+        "habits/public/",
+        HabitViewSet.as_view({"get": "public"}),
+        name="habit-public-list",
+    ),
 ]

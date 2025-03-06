@@ -1,10 +1,18 @@
+import requests
 import os
-
 from celery import shared_task
-from telegram import Bot
 
 
 @shared_task
 def send_reminder(chat_id, message):
-    bot = Bot(token=os.getenv("TELEGRAM_BOT_TOKEN"))
-    bot.send_message(chat_id=chat_id, text=message)
+    """
+    Отправляет сообщение в Telegram через API.
+    """
+    token = os.getenv("TELEGRAM_BOT_TOKEN")
+    url = f"https://api.telegram.org/bot{token}/sendMessage"
+    params = {
+        "chat_id": chat_id,
+        "text": message,
+    }
+    response = requests.get(url, params=params)
+    return response.status_code
